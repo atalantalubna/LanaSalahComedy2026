@@ -106,9 +106,9 @@ const FooterSubscribe = () => {
         <Button 
           type="submit" 
           disabled={isSubmitting}
-          className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-medium px-8"
+          className="w-full sm:w-auto bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 hover:from-red-600 hover:via-orange-600 hover:to-yellow-600 text-white font-medium px-8 rounded-full shadow-lg"
         >
-          {isSubmitting ? "..." : "Let Me In!"}
+          {isSubmitting ? "..." : "Yay Human Connection!"}
         </Button>
       </form>
     </div>
