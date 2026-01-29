@@ -6,8 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import About from "./pages/About";
-import Project from "./pages/Project";
-import CategoryGallery from "./pages/CategoryGallery";
+import Videos from "./pages/Videos";
+import Shows from "./pages/Shows";
+import EPK from "./pages/EPK";
 import NotFound from "./pages/NotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
 
@@ -24,8 +25,9 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
-              <Route path="/category/:category" element={<CategoryGallery />} />
-              <Route path="/project/:slug" element={<Project />} />
+              <Route path="/videos" element={<Videos />} />
+              <Route path="/shows" element={<Shows />} />
+              <Route path="/epk" element={<EPK />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

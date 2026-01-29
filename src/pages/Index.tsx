@@ -1,116 +1,60 @@
-import { useState, useEffect } from "react";
-import PortfolioHeader from "@/components/PortfolioHeader";
-import PhotographerBio from "@/components/PhotographerBio";
-import PortfolioFooter from "@/components/PortfolioFooter";
-import MasonryGallery from "@/components/MasonryGallery";
-import Lightbox from "@/components/Lightbox";
+import ComedyHeader from "@/components/ComedyHeader";
+import ComedianBio from "@/components/ComedianBio";
+import VideoGrid from "@/components/VideoGrid";
+import UpcomingShows from "@/components/UpcomingShows";
+import Testimonials from "@/components/Testimonials";
+import ComedyFooter from "@/components/ComedyFooter";
 import SEO from "@/components/SEO";
-import { fetchMixedMedia } from "@/services/pexels";
 
 const Index = () => {
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [displayImages, setDisplayImages] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Homepage always shows SELECTED category
-  const activeCategory = "SELECTED";
-
-  useEffect(() => {
-    const loadImages = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await fetchMixedMedia(activeCategory, 1, 20);
-        setDisplayImages(data.items);
-      } catch (err) {
-        console.error('Error fetching Pexels media:', err);
-        setError('Failed to load images. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadImages();
-  }, []); // Remove activeCategory dependency - it's now constant
-
-  const handleImageClick = (index: number) => {
-    setLightboxIndex(index);
-    setLightboxOpen(true);
-  };
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Morgan Blake",
-    "jobTitle": "Production Photographer",
-    "description": "Production photographer specializing in fashion, editorial, and commercial photography. Creating compelling imagery for global brands and publications.",
-    "url": "https://morganblake.com",
-    "image": "https://morganblake.com/og-image.jpg",
+    "name": "Lana Salah",
+    "jobTitle": "Stand-up Comedian & Satirist",
+    "description": "Palestinian-American stand-up comedian celebrating sharp wit, political satire, and cultural insight. A Los Angeles-based performer whose material explores identity, family, and uncomfortable truths.",
+    "url": "https://lanasalah.com",
+    "image": "https://lanasalah.com/og-image.jpg",
     "sameAs": [
-      "https://instagram.com/morganblake.photo"
+      "https://instagram.com/thelanasalah",
+      "https://tiktok.com/@thelanasalah",
+      "https://youtube.com/@thelanasalah",
+      "https://threads.net/@thelanasalah"
     ],
     "knowsAbout": [
-      "Fashion Photography",
-      "Editorial Photography",
-      "Commercial Production",
-      "Fashion Campaigns",
-      "Brand Photography"
+      "Stand-up Comedy",
+      "Political Satire",
+      "Cultural Commentary",
+      "Observational Comedy"
     ],
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "London",
-      "addressCountry": "UK"
+      "addressLocality": "Los Angeles",
+      "addressRegion": "CA",
+      "addressCountry": "US"
     }
   };
 
   return (
     <>
       <SEO
-        title="Morgan Blake - Fashion Production & Photography"
-        description="Production photographer specializing in fashion, editorial, and commercial photography. Creating compelling imagery for global brands and publications."
+        title="Lana Salah - Stand-up Comedian & Satirist"
+        description="Palestinian-American stand-up comedian celebrating sharp wit, political satire, and cultural insight. Los Angeles-based performer exploring identity, family, and uncomfortable truths."
         canonicalUrl="/"
         ogType="profile"
         jsonLd={jsonLd}
       />
 
-      <PortfolioHeader
-        activeCategory={activeCategory}
-      />
+      <ComedyHeader />
       
       <main>
-        <PhotographerBio />
-
-        {error && (
-          <div className="text-center py-20">
-            <p className="text-destructive">{error}</p>
-          </div>
-        )}
-
-        {!error && displayImages.length > 0 && (
-          <MasonryGallery
-            images={displayImages}
-            onImageClick={handleImageClick}
-          />
-        )}
-
-        {!loading && !error && displayImages.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-muted-foreground">No images found in this category.</p>
-          </div>
-        )}
+        <ComedianBio />
+        <VideoGrid />
+        <UpcomingShows />
+        <Testimonials />
       </main>
 
-      {lightboxOpen && displayImages.length > 0 && (
-        <Lightbox
-          images={displayImages}
-          initialIndex={lightboxIndex}
-          onClose={() => setLightboxOpen(false)}
-        />
-      )}
-
-      <PortfolioFooter />
+      <ComedyFooter />
     </>
   );
 };
