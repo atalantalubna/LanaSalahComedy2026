@@ -14,6 +14,9 @@ const ComedianBio = () => {
         <p className="text-sm text-foreground/70 max-w-2xl leading-relaxed mx-auto">
           Bill Hicks taught her that comedy can be a weapon. George Carlin taught her that language matters. Her Palestinian grandmother taught her that guilt is a form of love. She's still working through that last one.
         </p>
+        <p className="text-sm text-foreground/60 max-w-2xl leading-relaxed mx-auto italic pt-4">
+          Comedy. The only true medium that can diffuse tension between vastly different humans and perspectives. Coming soon—a deep dive into why laughter connects us all.
+        </p>
       </div>
     </section>
   );
