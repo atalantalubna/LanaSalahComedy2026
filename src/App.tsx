@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Videos from "./pages/Videos";
 import Social from "./pages/Social";
+import Gallery from "./pages/Gallery";
 import Shows from "./pages/Shows";
 import EPK from "./pages/EPK";
 import NotFound from "./pages/NotFound";
@@ -28,6 +29,7 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/videos" element={<Videos />} />
               <Route path="/social" element={<Social />} />
+              <Route path="/gallery" element={<Gallery />} />
               <Route path="/shows" element={<Shows />} />
               <Route path="/epk" element={<EPK />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
