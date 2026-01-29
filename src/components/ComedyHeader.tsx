@@ -12,6 +12,8 @@ const navItems = [
   { label: "SHOWS", path: "/shows" },
   { label: "EPK", path: "/epk" },
   { label: "ABOUT", path: "/about" },
+  { label: "PODCAST", path: "/podcast" },
+  { label: "MERCH", path: "/merch" },
 ];
 
 const ComedyHeader = () => {

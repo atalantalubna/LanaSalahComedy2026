@@ -11,6 +11,8 @@ import Social from "./pages/Social";
 import Gallery from "./pages/Gallery";
 import Shows from "./pages/Shows";
 import EPK from "./pages/EPK";
+import Podcast from "./pages/Podcast";
+import Merch from "./pages/Merch";
 import NotFound from "./pages/NotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
 
@@ -32,6 +34,8 @@ const App = () => (
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/shows" element={<Shows />} />
               <Route path="/epk" element={<EPK />} />
+              <Route path="/podcast" element={<Podcast />} />
+              <Route path="/merch" element={<Merch />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
