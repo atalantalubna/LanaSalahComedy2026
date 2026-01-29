@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Videos from "./pages/Videos";
+import Social from "./pages/Social";
 import Shows from "./pages/Shows";
 import EPK from "./pages/EPK";
 import NotFound from "./pages/NotFound";
@@ -26,6 +27,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/videos" element={<Videos />} />
+              <Route path="/social" element={<Social />} />
               <Route path="/shows" element={<Shows />} />
               <Route path="/epk" element={<EPK />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
