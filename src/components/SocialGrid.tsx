@@ -3,7 +3,7 @@ import { Instagram, Youtube, Music2, ExternalLink } from "lucide-react";
 
 interface SocialPost {
   id: string;
-  type: "instagram" | "tiktok" | "youtube";
+  type: "instagram" | "upscroll" | "youtube";
   embedUrl: string;
   thumbnail?: string;
   caption?: string;
@@ -20,8 +20,8 @@ const socialPosts: SocialPost[] = [
   },
   {
     id: "2",
-    type: "tiktok",
-    embedUrl: "https://www.tiktok.com/embed/v2/example1",
+    type: "upscroll",
+    embedUrl: "https://upscroll.com/embed/example1",
     caption: "POV: You're explaining comedy to your parents",
     size: "medium",
   },
@@ -41,8 +41,8 @@ const socialPosts: SocialPost[] = [
   },
   {
     id: "5",
-    type: "tiktok",
-    embedUrl: "https://www.tiktok.com/embed/v2/example2",
+    type: "upscroll",
+    embedUrl: "https://upscroll.com/embed/example2",
     caption: "Dating in LA be like...",
     size: "medium",
   },
@@ -62,8 +62,8 @@ const socialPosts: SocialPost[] = [
   },
   {
     id: "8",
-    type: "tiktok",
-    embedUrl: "https://www.tiktok.com/embed/v2/example3",
+    type: "upscroll",
+    embedUrl: "https://upscroll.com/embed/example3",
     caption: "When the crowd finally gets it",
     size: "small",
   },
@@ -85,19 +85,19 @@ const socialPosts: SocialPost[] = [
 
 const platformIcons = {
   instagram: Instagram,
-  tiktok: Music2,
+  upscroll: Music2,
   youtube: Youtube,
 };
 
 const platformColors = {
   instagram: "from-pink-500 to-purple-600",
-  tiktok: "from-gray-900 to-gray-700",
+  upscroll: "from-emerald-500 to-teal-600",
   youtube: "from-red-600 to-red-500",
 };
 
 const platformLabels = {
   instagram: "Instagram Reel",
-  tiktok: "TikTok",
+  upscroll: "Upscroll",
   youtube: "YouTube",
 };
 
@@ -204,7 +204,7 @@ const SocialGrid = () => {
     <section className="max-w-[1600px] mx-auto px-3 md:px-5 pb-20">
       {/* Platform Filter Pills */}
       <div className="flex flex-wrap justify-center gap-3 mb-12">
-        {["All", "Instagram", "TikTok", "YouTube"].map((platform) => (
+        {["All", "Instagram", "Upscroll", "YouTube"].map((platform) => (
           <button
             key={platform}
             className={`px-4 py-2 text-xs uppercase tracking-widest font-inter transition-all duration-200 ${
@@ -241,13 +241,13 @@ const SocialGrid = () => {
             <span className="text-xs uppercase tracking-wider">@thelanasalah</span>
           </a>
           <a
-            href="https://tiktok.com/@thelanasalah"
+            href="https://upscroll.com/thelanasalah"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Music2 size={20} />
-            <span className="text-xs uppercase tracking-wider">TikTok</span>
+            <span className="text-xs uppercase tracking-wider">Upscroll</span>
           </a>
           <a
             href="https://youtube.com/@thelanasalah"
