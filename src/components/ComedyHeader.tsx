@@ -48,10 +48,10 @@ const ComedyHeader = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background">
-      <div className="max-w-[1600px] mx-auto flex items-center justify-between md:justify-center px-3 md:px-5 py-3 gap-6">
+      <div className="max-w-[1600px] mx-auto flex items-center justify-between lg:justify-center px-3 lg:px-5 py-3 gap-6">
         <Link
           to="/"
-          className="text-[10px] md:text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors font-inter whitespace-nowrap"
+          className="text-[10px] lg:text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors font-inter whitespace-nowrap"
           onMouseEnter={() => setHoveredItem('name')}
           onMouseLeave={() => setHoveredItem(null)}
         >
@@ -64,25 +64,25 @@ const ComedyHeader = () => {
           )}
         </Link>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile/Tablet Menu Button - visible on lg and below */}
         <button
           onClick={() => setMobileMenuOpen(true)}
-          className="md:hidden p-2 text-foreground/70 hover:text-foreground transition-colors"
+          className="lg:hidden p-2 text-foreground/70 hover:text-foreground transition-colors"
           aria-label="Open navigation menu"
           aria-expanded={mobileMenuOpen}
         >
           <Menu size={20} />
         </button>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
+        {/* Desktop Navigation - visible on lg and above */}
+        <div className="hidden lg:flex items-center gap-6">
           {navItems.map((item) => (
             <Link
               key={item.label}
               to={item.path}
               onMouseEnter={() => setHoveredItem(item.label)}
               onMouseLeave={() => setHoveredItem(null)}
-              className={`text-[10px] md:text-[11px] uppercase tracking-widest font-inter transition-colors whitespace-nowrap ${
+              className={`text-[10px] lg:text-[11px] uppercase tracking-widest font-inter transition-colors whitespace-nowrap ${
                 isActive(item.path)
                   ? "text-foreground font-medium"
                   : "text-muted-foreground hover:text-foreground/80"
@@ -99,11 +99,11 @@ const ComedyHeader = () => {
           ))}
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* Mobile/Tablet Menu Overlay */}
         {mobileMenuOpen && (
           <FocusTrap>
             <div
-              className="fixed inset-0 bg-background z-50 md:hidden"
+              className="fixed inset-0 bg-background z-50 lg:hidden"
               role="dialog"
               aria-modal="true"
               aria-label="Mobile navigation"
