@@ -7,6 +7,7 @@ import { TextRoll } from "@/components/ui/text-roll";
 const navItems = [
   { label: "HOME", path: "/" },
   { label: "VIDEOS", path: "/videos" },
+  { label: "SOCIAL", path: "/social" },
   { label: "SHOWS", path: "/shows" },
   { label: "EPK", path: "/epk" },
   { label: "ABOUT", path: "/about" },
