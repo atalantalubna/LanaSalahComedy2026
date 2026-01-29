@@ -7,7 +7,6 @@ import ComedyFooter from "@/components/ComedyFooter";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -18,35 +17,37 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 
-const contactSchema = z.object({
-  name: z.string().trim().min(1, { message: "Name is required" }).max(100, { message: "Name must be less than 100 characters" }),
+const subscribeSchema = z.object({
+  firstName: z.string().trim().min(1, { message: "First name is required" }).max(50, { message: "First name must be less than 50 characters" }),
+  lastName: z.string().trim().min(1, { message: "Last name is required" }).max(50, { message: "Last name must be less than 50 characters" }),
   email: z.string().trim().email({ message: "Invalid email address" }).max(255, { message: "Email must be less than 255 characters" }),
-  message: z.string().trim().min(1, { message: "Message is required" }).max(1000, { message: "Message must be less than 1000 characters" }),
+  phone: z.string().trim().min(10, { message: "Please enter a valid phone number" }).max(20, { message: "Phone number must be less than 20 characters" }).regex(/^[+]?[\d\s()-]+$/, { message: "Invalid phone number format" }),
 });
 
-type ContactFormValues = z.infer<typeof contactSchema>;
+type SubscribeFormValues = z.infer<typeof subscribeSchema>;
 
 const About = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<ContactFormValues>({
-    resolver: zodResolver(contactSchema),
+  const form = useForm<SubscribeFormValues>({
+    resolver: zodResolver(subscribeSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
-      message: "",
+      phone: "",
     },
   });
 
-  const onSubmit = async (data: ContactFormValues) => {
+  const onSubmit = async (data: SubscribeFormValues) => {
     setIsSubmitting(true);
 
     // Simulate form submission
     setTimeout(() => {
       toast({
-        title: "Message sent",
-        description: "Thank you for your inquiry. I'll get back to you soon.",
+        title: "You're in!",
+        description: "Thank you for subscribing. You'll hear from us soon!",
       });
       form.reset();
       setIsSubmitting(false);
@@ -125,41 +126,63 @@ const About = () => {
           </div>
         </section>
 
-        {/* Contact Form Section */}
+        {/* Subscribe Form Section */}
         <section className="max-w-xl mx-auto px-3 md:px-5 py-16">
           <div className="text-center space-y-4 mb-12">
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter">
-              GET IN TOUCH
+              STAY CONNECTED
             </p>
             <h2 className="font-playfair text-3xl md:text-4xl text-foreground">
-              Contact
+              Subscribe for Updates
             </h2>
             <p className="text-foreground/80 text-sm leading-relaxed">
-              For booking inquiries, press requests, or just to say hello.
+              Join our mailing list and get notified when we have shows in your area.
             </p>
           </div>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
-                      Name *
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Your name"
-                        className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
+                        First Name *
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="First name"
+                          className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
+                        Last Name *
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Last name"
+                          className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <FormField
                 control={form.control}
@@ -184,20 +207,24 @@ const About = () => {
 
               <FormField
                 control={form.control}
-                name="message"
+                name="phone"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
-                      Message *
+                      Phone Number *
                     </FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Tell me about your event or project..."
-                        className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground min-h-[150px] px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors resize-none"
+                      <Input
+                        type="tel"
+                        placeholder="+1 (555) 123-4567"
+                        className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs" />
+                    <p className="text-[10px] text-muted-foreground mt-1">
+                      For SMS updates about shows in your area
+                    </p>
                   </FormItem>
                 )}
               />
@@ -209,7 +236,7 @@ const About = () => {
                   variant="outline"
                   className="w-full md:w-auto px-12 py-6 text-sm uppercase tracking-widest font-inter border-foreground/40 hover:bg-foreground hover:text-background transition-all"
                 >
-                  {isSubmitting ? "Sending..." : "Send"}
+                  {isSubmitting ? "Subscribing..." : "I'm In!"}
                 </Button>
               </div>
             </form>

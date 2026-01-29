@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -35,6 +35,18 @@ const GalleryMasonry = () => {
     fetchImages();
   }, []);
 
+  // Prevent right-click on images
+  const handleContextMenu = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    return false;
+  }, []);
+
+  // Prevent drag
+  const handleDragStart = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    return false;
+  }, []);
+
   const handleImageLoad = (id: string) => {
     setLoadedImages((prev) => new Set(prev).add(id));
   };
@@ -50,12 +62,6 @@ const GalleryMasonry = () => {
     tall: "row-span-2",
     wide: "md:col-span-2",
     square: "",
-  };
-
-  const aspectRatioStyles: Record<string, string> = {
-    tall: "aspect-[3/4]",
-    wide: "aspect-[16/9]",
-    square: "aspect-square",
   };
 
   if (loading) {
@@ -102,13 +108,23 @@ const GalleryMasonry = () => {
         {filteredImages.map((image) => (
           <div
             key={image.id}
-            className={`relative overflow-hidden group cursor-pointer bg-secondary/30 ${aspectClasses[image.aspect_ratio]}`}
+            className={`relative overflow-hidden group cursor-pointer bg-secondary/30 select-none ${aspectClasses[image.aspect_ratio]}`}
+            onContextMenu={handleContextMenu}
           >
-            <div className={`relative w-full h-full`}>
-              {/* Loading skeleton */}
-              {!loadedImages.has(image.id) && (
-                <div className="absolute inset-0 bg-secondary animate-pulse" />
-              )}
+            <div className="relative w-full h-full">
+              {/* Blurred placeholder */}
+              <div 
+                className={`absolute inset-0 bg-secondary transition-opacity duration-500 ${
+                  loadedImages.has(image.id) ? "opacity-0" : "opacity-100"
+                }`}
+                style={{
+                  backgroundImage: `url(${image.image_url})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  filter: 'blur(20px)',
+                  transform: 'scale(1.1)',
+                }}
+              />
               
               {/* Image */}
               <img
@@ -116,10 +132,23 @@ const GalleryMasonry = () => {
                 alt={image.title || "Gallery image"}
                 loading="lazy"
                 onLoad={() => handleImageLoad(image.id)}
-                className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
+                onContextMenu={handleContextMenu}
+                onDragStart={handleDragStart}
+                className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-105 pointer-events-none ${
                   loadedImages.has(image.id) ? "opacity-100" : "opacity-0"
                 }`}
+                style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
               />
+
+              {/* Watermark overlay */}
+              <div 
+                className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ userSelect: 'none' }}
+              >
+                <span className="text-white/30 text-lg md:text-xl font-inter uppercase tracking-widest rotate-[-25deg]">
+                  lanasalah.com
+                </span>
+              </div>
 
               {/* Hover Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
