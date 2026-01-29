@@ -3,6 +3,7 @@ import ComedianBio from "@/components/ComedianBio";
 import VideoGrid from "@/components/VideoGrid";
 import UpcomingShows from "@/components/UpcomingShows";
 import Testimonials from "@/components/Testimonials";
+import ComingSoonSection from "@/components/ComingSoonSection";
 import ComedyFooter from "@/components/ComedyFooter";
 import SEO from "@/components/SEO";
 
@@ -51,6 +52,7 @@ const Index = () => {
         <ComedianBio />
         <VideoGrid />
         <UpcomingShows />
+        <ComingSoonSection />
         <Testimonials />
       </main>
 
