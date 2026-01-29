@@ -73,11 +73,18 @@ const About = () => {
 
         <section className="max-w-3xl mx-auto px-3 md:px-5 py-12">
           <div className="grid md:grid-cols-2 gap-12 items-start">
-            {/* Photo Placeholder */}
-            <div className="aspect-[3/4] bg-muted flex items-center justify-center">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                Photo Coming Soon
-              </p>
+            {/* Photo Placeholders - Two stacked vertically */}
+            <div className="space-y-4">
+              <div className="aspect-[3/4] bg-muted flex items-center justify-center">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Photo Coming Soon
+                </p>
+              </div>
+              <div className="aspect-[3/4] bg-muted flex items-center justify-center">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Photo Coming Soon
+                </p>
+              </div>
             </div>
 
             {/* Bio Content */}
