@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import FocusTrap from "focus-trap-react";
 import { TextRoll } from "@/components/ui/text-roll";
+import lanaLogo from "@/assets/lana-hero.png";
 
 const navItems = [
   { label: "HOME", path: "/" },
@@ -48,20 +49,16 @@ const ComedyHeader = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background">
-      <div className="max-w-[1600px] mx-auto flex items-center justify-between lg:justify-center px-3 lg:px-5 py-3 gap-6">
+      <div className="max-w-[1600px] mx-auto flex items-center justify-between lg:justify-center px-3 lg:px-5 py-2 gap-6">
         <Link
           to="/"
-          className="text-[10px] lg:text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors font-inter whitespace-nowrap"
-          onMouseEnter={() => setHoveredItem('name')}
-          onMouseLeave={() => setHoveredItem(null)}
+          className="flex-shrink-0"
         >
-          {hoveredItem === 'name' ? (
-            <TextRoll duration={0.3} getEnterDelay={(i) => i * 0.02} getExitDelay={(i) => i * 0.02}>
-              LANA SALAH
-            </TextRoll>
-          ) : (
-            "LANA SALAH"
-          )}
+          <img 
+            src={lanaLogo} 
+            alt="Lana Salah" 
+            className="h-10 lg:h-12 w-auto"
+          />
         </Link>
 
         {/* Mobile/Tablet Menu Button - visible on lg and below */}
