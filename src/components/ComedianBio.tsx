@@ -9,9 +9,10 @@ const ComedianBio = () => {
           STAND-UP COMEDIAN & SATIRIST
         </p>
         <p className="text-sm text-foreground/80 max-w-2xl leading-relaxed mx-auto">
-          Palestinian-American stand-up comedian celebrating sharp wit, political satire, and cultural insight.
-          A Los Angeles-based performer whose material explores identity, family, and uncomfortable truths.
-          Known for fearless comedy inspired by Bill Hicks and George Carlin.
+          Lana Salah brings a sharp-witted perspective to the stage, blending dark, satirical humor with clever storytelling and cultural insight. A Palestinian American who spent nearly a decade living in the Middle East, Lana uses her experiences to craft incisive social commentary, delivered with a signature dry and deadpan style.
+        </p>
+        <p className="text-sm text-foreground/70 max-w-2xl leading-relaxed mx-auto">
+          Bill Hicks taught her that comedy can be a weapon. George Carlin taught her that language matters. Her Palestinian grandmother taught her that guilt is a form of love. She's still working through that last one.
         </p>
       </div>
     </section>

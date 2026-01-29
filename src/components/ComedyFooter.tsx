@@ -64,7 +64,7 @@ const ComedyFooter = () => {
 
       {/* Copyright */}
       <p className="text-center text-[10px] uppercase tracking-widest text-muted-foreground/60 font-inter">
-        © {new Date().getFullYear()} Lana Salah. All rights reserved.
+        © 2026 LANA SALAH. ALL RIGHTS RESERVED.
       </p>
     </footer>
   );
