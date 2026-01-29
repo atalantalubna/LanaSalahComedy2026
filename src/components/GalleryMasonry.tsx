@@ -1,39 +1,117 @@
-import { useState, useEffect, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useState, useCallback } from "react";
+
+// Import gallery images
+import lanaStage1 from "@/assets/gallery/lana-stage-1.jpg";
+import lanaHeadshot1 from "@/assets/gallery/lana-headshot-1.jpg";
+import lanaFestival1 from "@/assets/gallery/lana-festival-1.jpg";
+import lanaPortraitCloseup from "@/assets/gallery/lana-portrait-closeup.jpg";
+import lanaBackstage1 from "@/assets/gallery/lana-backstage-1.jpg";
+import lanaStage2 from "@/assets/gallery/lana-stage-2.jpg";
+import lanaEditorialLa from "@/assets/gallery/lana-editorial-la.jpg";
+import lanaGreenroom from "@/assets/gallery/lana-greenroom.jpg";
+import lanaBwPortrait from "@/assets/gallery/lana-bw-portrait.jpg";
+import lanaTheaterEntrance from "@/assets/gallery/lana-theater-entrance.jpg";
+import lanaRooftop from "@/assets/gallery/lana-rooftop.jpg";
+import lanaPodcast from "@/assets/gallery/lana-podcast.jpg";
 
 interface GalleryImage {
   id: string;
-  title: string | null;
+  title: string;
   image_url: string;
-  aspect_ratio: string;
-  category: string | null;
-  display_order: number | null;
+  aspect_ratio: "tall" | "wide" | "square";
+  category: "performance" | "studio" | "candid" | "press";
 }
 
+const galleryImages: GalleryImage[] = [
+  {
+    id: "1",
+    title: "The Comedy Store",
+    image_url: lanaStage1,
+    aspect_ratio: "tall",
+    category: "performance",
+  },
+  {
+    id: "2",
+    title: "Studio Headshot",
+    image_url: lanaHeadshot1,
+    aspect_ratio: "square",
+    category: "studio",
+  },
+  {
+    id: "3",
+    title: "Comedy Festival",
+    image_url: lanaFestival1,
+    aspect_ratio: "wide",
+    category: "performance",
+  },
+  {
+    id: "4",
+    title: "Golden Hour",
+    image_url: lanaPortraitCloseup,
+    aspect_ratio: "tall",
+    category: "studio",
+  },
+  {
+    id: "5",
+    title: "Backstage Prep",
+    image_url: lanaBackstage1,
+    aspect_ratio: "square",
+    category: "candid",
+  },
+  {
+    id: "6",
+    title: "Laugh Factory Set",
+    image_url: lanaStage2,
+    aspect_ratio: "tall",
+    category: "performance",
+  },
+  {
+    id: "7",
+    title: "Los Angeles Editorial",
+    image_url: lanaEditorialLa,
+    aspect_ratio: "wide",
+    category: "press",
+  },
+  {
+    id: "8",
+    title: "Green Room Vibes",
+    image_url: lanaGreenroom,
+    aspect_ratio: "tall",
+    category: "candid",
+  },
+  {
+    id: "9",
+    title: "Black & White Portrait",
+    image_url: lanaBwPortrait,
+    aspect_ratio: "square",
+    category: "studio",
+  },
+  {
+    id: "10",
+    title: "Grand Theater Performance",
+    image_url: lanaTheaterEntrance,
+    aspect_ratio: "wide",
+    category: "performance",
+  },
+  {
+    id: "11",
+    title: "LA Rooftop",
+    image_url: lanaRooftop,
+    aspect_ratio: "tall",
+    category: "press",
+  },
+  {
+    id: "12",
+    title: "Podcast Recording",
+    image_url: lanaPodcast,
+    aspect_ratio: "square",
+    category: "candid",
+  },
+];
+
 const GalleryMasonry = () => {
-  const [images, setImages] = useState<GalleryImage[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      const { data, error } = await supabase
-        .from("gallery_images")
-        .select("*")
-        .order("display_order", { ascending: true });
-
-      if (error) {
-        console.error("Error fetching gallery images:", error);
-      } else {
-        setImages(data || []);
-      }
-      setLoading(false);
-    };
-
-    fetchImages();
-  }, []);
 
   // Prevent right-click on images
   const handleContextMenu = useCallback((e: React.MouseEvent) => {
@@ -55,34 +133,14 @@ const GalleryMasonry = () => {
 
   const filteredImages =
     selectedCategory === "all"
-      ? images
-      : images.filter((img) => img.category === selectedCategory);
+      ? galleryImages
+      : galleryImages.filter((img) => img.category === selectedCategory);
 
   const aspectClasses: Record<string, string> = {
     tall: "row-span-2",
     wide: "md:col-span-2",
     square: "",
   };
-
-  if (loading) {
-    return (
-      <section className="max-w-[1600px] mx-auto px-3 md:px-5 pb-20">
-        <div className="flex justify-center gap-3 mb-12">
-          {categories.map((cat) => (
-            <Skeleton key={cat} className="h-10 w-24" />
-          ))}
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-          {[...Array(9)].map((_, i) => (
-            <Skeleton
-              key={i}
-              className={`${i % 3 === 0 ? "row-span-2 aspect-[3/4]" : "aspect-square"}`}
-            />
-          ))}
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="max-w-[1600px] mx-auto px-3 md:px-5 pb-20">
@@ -129,7 +187,7 @@ const GalleryMasonry = () => {
               {/* Image */}
               <img
                 src={image.image_url}
-                alt={image.title || "Gallery image"}
+                alt={image.title}
                 loading="lazy"
                 onLoad={() => handleImageLoad(image.id)}
                 onContextMenu={handleContextMenu}
@@ -153,16 +211,12 @@ const GalleryMasonry = () => {
               {/* Hover Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  {image.title && (
-                    <p className="text-white text-sm font-medium">
-                      {image.title}
-                    </p>
-                  )}
-                  {image.category && (
-                    <span className="text-white/70 text-xs uppercase tracking-wider">
-                      {image.category}
-                    </span>
-                  )}
+                  <p className="text-white text-sm font-medium">
+                    {image.title}
+                  </p>
+                  <span className="text-white/70 text-xs uppercase tracking-wider">
+                    {image.category}
+                  </span>
                 </div>
               </div>
             </div>
