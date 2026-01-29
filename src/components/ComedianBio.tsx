@@ -8,14 +8,6 @@ const ComedianBio = () => {
   return (
     <>
       <section className="relative pt-16 overflow-hidden">
-        {/* Large asymmetric title - positioned above both sections */}
-        <div className="absolute top-20 md:top-24 left-0 right-0 z-10 pointer-events-none">
-          <h1 className="font-playfair text-[15vw] md:text-[12vw] lg:text-[10vw] text-foreground leading-none tracking-tight pl-4 md:pl-8 lg:pl-12">
-            <span className="block transform -rotate-2 origin-left">Lana</span>
-            <span className="block transform rotate-1 origin-left ml-[20vw] md:ml-[25vw]">Salah</span>
-          </h1>
-        </div>
-
         {/* Top section - Hero Image (50vh) */}
         <div className="relative h-[50vh] bg-gradient-to-br from-pink-100 to-pink-50">
           <img
@@ -26,12 +18,19 @@ const ComedianBio = () => {
           />
         </div>
 
-        {/* Bottom section - Copy (50vh) */}
-        <div className="relative min-h-[50vh] flex items-center px-6 md:px-12 lg:px-16 py-12 bg-background">
-          <div className="max-w-2xl mx-auto lg:mx-0 lg:ml-auto space-y-5 text-center lg:text-right">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-inter">
-              STAND-UP COMEDIAN & SATIRIST
-            </p>
+        {/* Title positioned at the center divider - half on image, half on copy */}
+        <div className="relative z-10 -mt-20 md:-mt-24 lg:-mt-28 text-center px-4">
+          <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-foreground leading-none tracking-tight">
+            Lana Salah
+          </h1>
+          <p className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-muted-foreground font-inter mt-4">
+            STAND-UP COMEDIAN & SATIRIST
+          </p>
+        </div>
+
+        {/* Bottom section - Copy */}
+        <div className="relative px-6 md:px-12 lg:px-16 py-12 md:py-16 bg-background">
+          <div className="max-w-2xl mx-auto space-y-5 text-center">
             <p className="text-sm md:text-base text-foreground/80 leading-relaxed">
               Lana Salah brings a sharp-witted perspective to the stage, blending dark, satirical humor with clever storytelling and cultural insight. A Palestinian American who spent nearly a decade living in the Middle East, Lana uses her experiences to craft incisive social commentary, delivered with a signature dry and deadpan style.
             </p>
@@ -42,7 +41,7 @@ const ComedianBio = () => {
               Comedy. The only true medium that can diffuse tension between vastly different humans and perspectives.{" "}
               <button
                 onClick={() => setComingSoonOpen(true)}
-                className="underline underline-offset-2 hover:text-foreground transition-colors cursor-pointer pointer-events-auto"
+                className="underline underline-offset-2 hover:text-foreground transition-colors cursor-pointer"
               >
                 Coming soon—a deep dive into why laughter connects us all.
               </button>
