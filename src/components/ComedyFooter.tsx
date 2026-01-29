@@ -1,11 +1,21 @@
 import { Instagram, Youtube, Mail } from "lucide-react";
 import FooterSubscribe from "./FooterSubscribe";
+import lanaLogo from "@/assets/lana-hero.png";
 
 const ComedyFooter = () => {
   return (
     <footer className="max-w-[1600px] mx-auto px-3 md:px-5 py-16 border-t border-border">
       {/* Subscribe Form */}
       <FooterSubscribe />
+
+      {/* Logo */}
+      <div className="flex justify-center mb-8">
+        <img 
+          src={lanaLogo} 
+          alt="Lana Salah" 
+          className="h-16 md:h-20 w-auto"
+        />
+      </div>
 
       {/* Social Links */}
       <div className="flex flex-wrap justify-center gap-6 mb-8">
