@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import PortfolioHeader from "@/components/PortfolioHeader";
-import PortfolioFooter from "@/components/PortfolioFooter";
+import ComedyHeader from "@/components/ComedyHeader";
+import ComedyFooter from "@/components/ComedyFooter";
 import SEO from "@/components/SEO";
-import { fetchPexelsPhotos } from "@/services/pexels";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,8 +27,6 @@ const contactSchema = z.object({
 type ContactFormValues = z.infer<typeof contactSchema>;
 
 const About = () => {
-  const [portrait, setPortrait] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -56,209 +53,171 @@ const About = () => {
     }, 1000);
   };
 
-  useEffect(() => {
-    const loadPortrait = async () => {
-      try {
-        // Fetch a professional photographer portrait from Pexels
-        const data = await fetchPexelsPhotos('PERSONAL', 1, 1); // Personal category has artistic portraits
-        if (data.photos.length > 0) {
-          const photo = data.photos[0];
-          setPortrait({
-            src: photo.src.large2x,
-            alt: photo.alt || 'Portrait',
-            width: photo.width,
-            height: photo.height,
-          });
-        }
-      } catch (err) {
-        console.error('Error fetching portrait:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadPortrait();
-  }, []);
-
   return (
     <>
       <SEO
-        title="About - Morgan Blake"
-        description="Learn about Morgan Blake, a production photographer specializing in fashion, editorial, and commercial photography."
+        title="About - Lana Salah"
+        description="Learn about Lana Salah, a Palestinian-American stand-up comedian and satirist based in Los Angeles."
         canonicalUrl="/about"
       />
 
-      <PortfolioHeader
-        activeCategory=""
-      />
+      <ComedyHeader />
       
-      <main className="min-h-screen">
-        <section className="max-w-[1600px] mx-auto pt-20 pb-12 md:pt-24 md:pb-16">
-          <div className="text-center space-y-8 mb-16 px-3 md:px-5 max-w-2xl mx-auto">
-            <div className="space-y-4">
-              <h1 className="font-playfair text-4xl md:text-5xl text-foreground">
-                Morgan Blake
-              </h1>
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter">
-                PRODUCTION & PHOTOGRAPHY
+      <main className="pt-16">
+        <section className="max-w-[1600px] mx-auto px-3 md:px-5 pt-20 pb-8">
+          <h1 className="font-playfair text-4xl md:text-5xl text-foreground text-center">
+            About
+          </h1>
+        </section>
+
+        <section className="max-w-3xl mx-auto px-3 md:px-5 py-12">
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            {/* Photo Placeholder */}
+            <div className="aspect-[3/4] bg-muted flex items-center justify-center">
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                Photo Coming Soon
               </p>
             </div>
 
-            {/* Portrait */}
-            {!loading && portrait && (
-              <div className="max-w-xs mx-auto border border-foreground/10 overflow-hidden">
-                <picture className="relative block">
-                  {portrait.width && portrait.height && (
-                    <svg
-                      width={portrait.width}
-                      height={portrait.height}
-                      viewBox={`0 0 ${portrait.width} ${portrait.height}`}
-                      className="w-full h-auto"
-                    >
-                      <rect
-                        width={portrait.width}
-                        height={portrait.height}
-                        fill="white"
-                      />
-                    </svg>
-                  )}
-                  <img
-                    src={portrait.src}
-                    alt={portrait.alt}
-                    className="absolute top-0 left-0 w-full h-auto grayscale"
-                    style={{
-                      opacity: loading ? 0 : 1,
-                      transition: 'opacity 0.5s ease-out'
-                    }}
-                  />
-                </picture>
+            {/* Bio Content */}
+            <div className="space-y-6">
+              <div className="space-y-4 text-sm text-foreground/90 leading-relaxed">
+                <p>
+                  Growing up between two cultures taught me one thing: nobody's 
+                  version of normal is actually normal. That's where the comedy lives.
+                </p>
+                <p>
+                  I started doing stand-up because I was tired of being the "funny friend" 
+                  for free. Now I get paid, and strangers have to listen to me talk about 
+                  my mom for 45 minutes.
+                </p>
+                <p>
+                  My comedy is political, personal, and occasionally uncomfortable — 
+                  exactly the way dinner at my family's house always was. I believe 
+                  the best comedy tells the truth in a way that makes it impossible 
+                  not to laugh.
+                </p>
+                <p>
+                  Bill Hicks taught me that comedy can be a weapon. George Carlin 
+                  taught me that language matters. My Palestinian grandmother taught 
+                  me that guilt is a form of love. I'm still working through that last one.
+                </p>
               </div>
-            )}
-          </div>
 
-          {/* Bio Section */}
-          <div className="max-w-2xl mx-auto px-3 md:px-5 space-y-8 text-center text-foreground/80 text-sm leading-relaxed mb-16">
-            <p>
-              Production photographer specializing in fashion, editorial, and commercial photography.
-              Creating compelling imagery with technical precision and creative vision for global brands
-              and publications.
+              <div className="pt-6 border-t border-border">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-4">
+                  INFLUENCES
+                </p>
+                <p className="text-sm text-foreground/80">
+                  Bill Hicks, George Carlin, Richard Pryor, Mo Amer, Maysoon Zayid
+                </p>
+              </div>
+
+              <div className="pt-6 border-t border-border">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-4">
+                  TOPICS
+                </p>
+                <p className="text-sm text-foreground/80">
+                  Identity, politics, family dynamics, cultural commentary, uncomfortable truths
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Form Section */}
+        <section className="max-w-xl mx-auto px-3 md:px-5 py-16">
+          <div className="text-center space-y-4 mb-12">
+            <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter">
+              GET IN TOUCH
             </p>
-
-            <p>
-              Full production services including art buying, location scouting, casting, and on-set
-              management. Collaborative approach ensuring seamless execution from concept to delivery.
+            <h2 className="font-playfair text-3xl md:text-4xl text-foreground">
+              Contact
+            </h2>
+            <p className="text-foreground/80 text-sm leading-relaxed">
+              For booking inquiries, press requests, or just to say hello.
             </p>
-
-            <div className="pt-8">
-              <h2 className="font-playfair text-xl text-foreground mb-4">Services</h2>
-              <p className="text-foreground/70 text-xs uppercase tracking-wider leading-loose">
-                Fashion & Editorial Photography / Commercial Production / Art Buying & Creative Direction /
-                Location Scouting / Casting & Talent Coordination
-              </p>
-            </div>
-
-            <div className="pt-4">
-              <h2 className="font-playfair text-xl text-foreground mb-4">Select Clients</h2>
-              <p className="text-foreground/70 text-xs uppercase tracking-wider leading-loose">
-                Various fashion brands and editorial publications
-              </p>
-            </div>
           </div>
 
-          {/* Contact Form Section */}
-          <div className="max-w-xl mx-auto px-3 md:px-5 pt-16">
-            <div className="text-center space-y-4 mb-12">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter">
-                INQUIRIES
-              </p>
-              <h2 className="font-playfair text-4xl md:text-5xl text-foreground">
-                Contact
-              </h2>
-              <p className="text-foreground/80 text-sm leading-relaxed">
-                For project inquiries and collaborations.
-              </p>
-            </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
+                      Name *
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Your name"
+                        className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
-                        Name *
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Your name"
-                          className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
+                      Email *
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="your@email.com"
+                        className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
-                        Email *
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="your@email.com"
-                          className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
+                      Message *
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tell me about your event or project..."
+                        className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground min-h-[150px] px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
-                        Message *
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Tell me about your project..."
-                          className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground min-h-[150px] px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors resize-none"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="pt-4 text-center">
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    variant="outline"
-                    className="w-full md:w-auto px-12 py-6 text-sm uppercase tracking-widest font-inter border-foreground/40 hover:bg-foreground hover:text-background transition-all"
-                  >
-                    {isSubmitting ? "Sending..." : "Send"}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </div>
+              <div className="pt-4 text-center">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  variant="outline"
+                  className="w-full md:w-auto px-12 py-6 text-sm uppercase tracking-widest font-inter border-foreground/40 hover:bg-foreground hover:text-background transition-all"
+                >
+                  {isSubmitting ? "Sending..." : "Send"}
+                </Button>
+              </div>
+            </form>
+          </Form>
         </section>
       </main>
 
-      <PortfolioFooter />
+      <ComedyFooter />
     </>
   );
 };
