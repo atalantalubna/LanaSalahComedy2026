@@ -20,16 +20,17 @@ const ComedyFooter = () => {
           <span>Instagram</span>
         </a>
         <a
-          href="https://tiktok.com/@thelanasalah"
+          href="https://upscroll.com/thelanasalah"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors font-inter"
-          aria-label="TikTok"
+          aria-label="Upscroll"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+            <path d="M12 2L4 10h5v8h6v-8h5L12 2z"/>
+            <path d="M4 20h16v2H4v-2z"/>
           </svg>
-          <span>TikTok</span>
+          <span>Upscroll</span>
         </a>
         <a
           href="https://youtube.com/@thelanasalah"
