@@ -77,12 +77,12 @@ const About = () => {
             {/* Photo Placeholders - Two stacked vertically */}
             <div className="space-y-4">
               <div className="aspect-[3/4] bg-muted flex items-center justify-center">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                <p className="text-xs uppercase tracking-widest text-muted-foreground">
                   Photo Coming Soon
                 </p>
               </div>
               <div className="aspect-[3/4] bg-muted flex items-center justify-center">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                <p className="text-xs uppercase tracking-widest text-muted-foreground">
                   Photo Coming Soon
                 </p>
               </div>
@@ -114,7 +114,7 @@ const About = () => {
               </div>
 
               <div className="pt-6 border-t border-border">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-4">
+                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
                   INFLUENCES
                 </p>
                 <p className="text-sm text-foreground/80">
@@ -123,7 +123,7 @@ const About = () => {
               </div>
 
               <div className="pt-6 border-t border-border">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-4">
+                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
                   TOPICS
                 </p>
                 <p className="text-sm text-foreground/80">
@@ -137,7 +137,7 @@ const About = () => {
         {/* Subscribe Form Section */}
         <section className="max-w-xl mx-auto px-3 md:px-5 py-16">
           <div className="text-center space-y-4 mb-12">
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground font-inter">
               STAY CONNECTED
             </p>
             <h2 className="font-playfair text-3xl md:text-4xl text-foreground">
@@ -230,7 +230,7 @@ const About = () => {
                       />
                     </FormControl>
                     <FormMessage className="text-xs" />
-                    <p className="text-[10px] text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       For SMS updates about shows in your area
                     </p>
                   </FormItem>

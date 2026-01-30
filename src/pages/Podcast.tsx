@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
 import ComedyHeader from "@/components/ComedyHeader";
 import ComedyFooter from "@/components/ComedyFooter";
 import SEO from "@/components/SEO";
-import { Mic, Headphones, Play } from "lucide-react";
+import { Mic, Headphones, Play, Bell } from "lucide-react";
 import { Typewriter } from "@/components/ui/typewriter";
+import { Button } from "@/components/ui/button";
 
 const podcastEpisodes = [
   {
@@ -43,7 +45,7 @@ const Podcast = () => {
         <section className="max-w-[1600px] mx-auto px-3 md:px-5 py-12 md:py-16">
           {/* Header */}
           <div className="text-center space-y-4 mb-12 animate-fade-in">
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground font-inter">
               COMING SOON
             </p>
             <h1 className="font-playfair text-4xl md:text-5xl text-foreground">
@@ -71,7 +73,7 @@ const Podcast = () => {
 
           {/* Episode Previews */}
           <div className="max-w-2xl mx-auto space-y-4">
-            <h3 className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter text-center mb-6">
+            <h3 className="text-xs uppercase tracking-widest text-muted-foreground font-inter text-center mb-6">
               Upcoming Episodes
             </h3>
             
@@ -87,11 +89,11 @@ const Podcast = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter">
+                      <span className="text-xs uppercase tracking-widest text-muted-foreground font-inter">
                         {episode.date}
                       </span>
-                      <span className="text-[10px] text-muted-foreground">•</span>
-                      <span className="text-[10px] text-muted-foreground font-inter">
+                      <span className="text-xs text-muted-foreground">•</span>
+                      <span className="text-xs text-muted-foreground font-inter">
                         {episode.duration}
                       </span>
                     </div>
@@ -102,22 +104,30 @@ const Podcast = () => {
                       {episode.description}
                     </p>
                   </div>
-                  <button 
-                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center opacity-50 cursor-not-allowed"
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="w-10 h-10 rounded-full"
                     disabled
                   >
-                    <Play className="w-4 h-4 text-muted-foreground ml-0.5" />
-                  </button>
+                    <Play className="w-4 h-4 ml-0.5" />
+                  </Button>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Subscribe CTA */}
-          <div className="text-center mt-12 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-            <p className="text-sm text-foreground/60 italic">
-              Subscribe to the newsletter to be notified when the podcast launches.
+          <div className="text-center mt-12 space-y-4 animate-fade-in" style={{ animationDelay: "0.5s" }}>
+            <p className="text-sm text-foreground/60">
+              Be the first to know when the podcast launches.
             </p>
+            <Button variant="outline" asChild className="px-8">
+              <Link to="/about#subscribe">
+                <Bell className="w-4 h-4 mr-2" />
+                Get Notified
+              </Link>
+            </Button>
           </div>
         </section>
       </main>

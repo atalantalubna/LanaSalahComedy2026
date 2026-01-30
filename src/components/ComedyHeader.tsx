@@ -79,7 +79,7 @@ const ComedyHeader = () => {
               to={item.path}
               onMouseEnter={() => setHoveredItem(item.label)}
               onMouseLeave={() => setHoveredItem(null)}
-              className={`text-[10px] lg:text-[11px] uppercase tracking-widest font-inter transition-colors whitespace-nowrap ${
+              className={`text-xs uppercase tracking-widest font-inter transition-colors whitespace-nowrap ${
                 isActive(item.path)
                   ? "text-foreground font-medium"
                   : "text-muted-foreground hover:text-foreground/80"

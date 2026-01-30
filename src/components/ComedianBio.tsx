@@ -13,7 +13,7 @@ const ComedianBio = () => {
         <div className="max-w-[1600px] mx-auto px-4 md:px-8">
           {/* Title centered above both columns */}
           <div className="text-center mb-10 md:mb-14">
-            <h1 className="font-playfair text-5xl md:text-6xl lg:text-7xl text-foreground">
+            <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl text-foreground">
               <Typewriter
                 text="Lana Salah"
                 delay={80}
@@ -21,7 +21,7 @@ const ComedianBio = () => {
                 onComplete={() => setNameComplete(true)}
               />
             </h1>
-            <p className="mt-3 text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-muted-foreground font-inter">
+            <p className="mt-4 text-xs md:text-sm uppercase tracking-[0.25em] text-muted-foreground font-inter">
               {nameComplete && (
                 <Typewriter
                   text="STAND-UP COMEDIAN & SATIRIST"

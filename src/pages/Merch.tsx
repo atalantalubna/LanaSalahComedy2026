@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
 import ComedyHeader from "@/components/ComedyHeader";
 import ComedyFooter from "@/components/ComedyFooter";
 import SEO from "@/components/SEO";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Bell } from "lucide-react";
 import { Typewriter } from "@/components/ui/typewriter";
+import { Button } from "@/components/ui/button";
 
 const Merch = () => {
   return (
@@ -23,7 +25,7 @@ const Merch = () => {
             </div>
             
             <div className="space-y-3">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground font-inter">
                 COMING SOON
               </p>
               <h1 className="font-playfair text-4xl md:text-5xl text-foreground">
@@ -35,7 +37,7 @@ const Merch = () => {
             </div>
 
             <div className="pt-8 space-y-4">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground font-inter">
                 What to expect
               </p>
               <div className="flex flex-wrap justify-center gap-4">
@@ -50,9 +52,17 @@ const Merch = () => {
               </div>
             </div>
 
-            <p className="text-sm text-foreground/60 italic pt-8">
-              Subscribe to the newsletter to be first in line when the store opens.
-            </p>
+            <div className="pt-8 space-y-4">
+              <p className="text-sm text-foreground/60">
+                Be the first to shop when the store opens.
+              </p>
+              <Button variant="outline" asChild className="px-8">
+                <Link to="/about#subscribe">
+                  <Bell className="w-4 h-4 mr-2" />
+                  Get Notified
+                </Link>
+              </Button>
+            </div>
           </div>
         </section>
       </main>

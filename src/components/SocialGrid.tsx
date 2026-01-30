@@ -207,7 +207,7 @@ const SocialGrid = () => {
         {["All", "Instagram", "Upscroll", "YouTube"].map((platform) => (
           <button
             key={platform}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-inter transition-all duration-200 ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-inter transition-all duration-300 ${
               platform === "All"
                 ? "bg-foreground text-background"
                 : "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
@@ -219,7 +219,7 @@ const SocialGrid = () => {
       </div>
 
       {/* Asymmetric Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 auto-rows-[200px] md:auto-rows-[250px]">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[250px]">
         {socialPosts.map((post) => (
           <SocialCard key={post.id} post={post} />
         ))}
