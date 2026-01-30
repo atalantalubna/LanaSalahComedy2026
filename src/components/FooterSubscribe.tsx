@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { supabase } from "@/integrations/supabase/client";
 
 const subscribeSchema = z.object({
   firstName: z.string().trim().min(1, { message: "First name is required" }).max(50),
@@ -18,7 +19,7 @@ type SubscribeFormData = z.infer<typeof subscribeSchema>;
 const FooterSubscribe = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  
+
   const {
     register,
     handleSubmit,
@@ -30,17 +31,41 @@ const FooterSubscribe = () => {
 
   const onSubmit = async (data: SubscribeFormData) => {
     setIsSubmitting(true);
-    
-    // Simulate submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "You're in!",
-      description: "You'll be the first to know about shows in your area.",
-    });
-    
-    reset();
-    setIsSubmitting(false);
+
+    try {
+      const { error } = await supabase.from("subscribers").insert({
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone: data.phone,
+      });
+
+      if (error) {
+        if (error.code === "23505") {
+          toast({
+            title: "Already subscribed",
+            description: "This email is already on our list!",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        toast({
+          title: "You're in!",
+          description: "You'll be the first to know about shows in your area.",
+        });
+        reset();
+      }
+    } catch (error) {
+      console.error("Error subscribing:", error);
+      toast({
+        title: "Error",
+        description: "Failed to subscribe. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -51,7 +76,7 @@ const FooterSubscribe = () => {
       <p className="text-sm text-muted-foreground">
         Join our mailing list and get notified when we have shows in your area
       </p>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
@@ -77,7 +102,7 @@ const FooterSubscribe = () => {
             )}
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <Input
@@ -102,9 +127,9 @@ const FooterSubscribe = () => {
             )}
           </div>
         </div>
-        
-        <Button 
-          type="submit" 
+
+        <Button
+          type="submit"
           disabled={isSubmitting}
           className="w-full sm:w-auto bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 hover:from-red-600 hover:via-orange-600 hover:to-yellow-600 text-white font-medium px-8 rounded-full shadow-lg"
         >

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import PortfolioHeader from "@/components/PortfolioHeader";
-import PortfolioFooter from "@/components/PortfolioFooter";
+import ComedyHeader from "@/components/ComedyHeader";
+import ComedyFooter from "@/components/ComedyFooter";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100, { message: "Name must be less than 100 characters" }),
@@ -41,30 +42,43 @@ const Contact = () => {
 
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
+
+    try {
+      const { error } = await supabase.from("contacts").insert({
+        name: data.name,
+        email: data.email,
+        message: data.message,
+      });
+
+      if (error) throw error;
+
       toast({
         title: "Message sent",
         description: "Thank you for your inquiry. I'll get back to you soon.",
       });
       form.reset();
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   return (
     <>
       <SEO
-        title="Contact - Morgan Blake"
-        description="Get in touch with Morgan Blake for photography inquiries, production services, and collaboration opportunities."
+        title="Contact - Lana Salah"
+        description="Get in touch with Lana Salah for booking inquiries, press, and collaboration opportunities."
         canonicalUrl="/contact"
       />
 
-      <PortfolioHeader
-        activeCategory=""
-      />
-      
+      <ComedyHeader />
+
       <main className="min-h-screen">
         <section className="max-w-[1600px] mx-auto px-3 md:px-5 pt-20 pb-12 md:pt-24 md:pb-16">
           <div className="text-center space-y-4 mb-12">
@@ -75,7 +89,7 @@ const Contact = () => {
               Contact
             </h1>
             <p className="text-foreground/80 text-sm leading-relaxed max-w-xl mx-auto">
-              For project inquiries and collaborations.
+              For booking inquiries and collaborations.
             </p>
           </div>
 
@@ -91,10 +105,10 @@ const Contact = () => {
                         Name *
                       </FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="Your name" 
+                        <Input
+                          placeholder="Your name"
                           className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors"
-                          {...field} 
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
@@ -111,11 +125,11 @@ const Contact = () => {
                         Email *
                       </FormLabel>
                       <FormControl>
-                        <Input 
-                          type="email" 
-                          placeholder="your@email.com" 
+                        <Input
+                          type="email"
+                          placeholder="your@email.com"
                           className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors"
-                          {...field} 
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
@@ -132,10 +146,10 @@ const Contact = () => {
                         Message *
                       </FormLabel>
                       <FormControl>
-                        <Textarea 
-                          placeholder="Tell me about your project..." 
+                        <Textarea
+                          placeholder="Tell me about your project..."
                           className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground min-h-[150px] px-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors resize-none"
-                          {...field} 
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
@@ -159,7 +173,7 @@ const Contact = () => {
         </section>
       </main>
 
-      <PortfolioFooter />
+      <ComedyFooter />
     </>
   );
 };

@@ -135,12 +135,12 @@ const VideoGrid = () => {
                 style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
               />
 
-              {/* Logo Watermark */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {/* Logo Watermark - bottom right corner */}
+              <div className="absolute bottom-8 right-3 pointer-events-none">
                 <img
                   src={lanaLogo}
                   alt=""
-                  className="w-12 md:w-16 opacity-20"
+                  className="w-8 md:w-10 opacity-30"
                   style={{ userSelect: 'none', pointerEvents: 'none' }}
                 />
               </div>
