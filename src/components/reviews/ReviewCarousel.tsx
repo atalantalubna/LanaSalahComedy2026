@@ -141,8 +141,8 @@ const ReviewCarousel = () => {
   if (isLoading) {
     return (
       <section className="max-w-[1600px] mx-auto px-3 md:px-5 py-16 md:py-20 bg-muted/30">
-        <h2 className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter text-center mb-12">
-          PRESS, PEERS & AUDIENCE
+        <h2 className="text-xl md:text-2xl uppercase tracking-widest text-foreground font-playfair text-center mb-12">
+          Press, Peers & Audience
         </h2>
         <div className="flex justify-center py-12">
           <div className="animate-pulse text-muted-foreground text-sm">
@@ -155,8 +155,8 @@ const ReviewCarousel = () => {
 
   return (
     <section className="max-w-[1600px] mx-auto px-3 md:px-5 py-16 md:py-20 bg-muted/30">
-      <h2 className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter text-center mb-12">
-        PRESS, PEERS & AUDIENCE
+      <h2 className="text-xl md:text-2xl uppercase tracking-widest text-foreground font-playfair text-center mb-12">
+        Press, Peers & Audience
       </h2>
 
       <div
