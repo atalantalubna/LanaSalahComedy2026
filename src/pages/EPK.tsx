@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import ComedyHeader from "@/components/ComedyHeader";
 import ComedyFooter from "@/components/ComedyFooter";
 import SEO from "@/components/SEO";
+import { Typewriter } from "@/components/ui/typewriter";
 
 const EPK = () => {
   return (
@@ -18,7 +19,7 @@ const EPK = () => {
       <main className="pt-16">
         <section className="max-w-[1600px] mx-auto px-3 md:px-5 pt-20 pb-8">
           <h1 className="font-playfair text-4xl md:text-5xl text-foreground text-center">
-            Festival EPK
+            <Typewriter text="Festival EPK" delay={60} startDelay={200} />
           </h1>
           <p className="text-sm text-muted-foreground text-center mt-4 max-w-xl mx-auto">
             Press materials and booking information for programmers and venues.

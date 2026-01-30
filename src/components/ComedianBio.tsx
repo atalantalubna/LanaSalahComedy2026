@@ -1,9 +1,11 @@
 import { useState } from "react";
 import ComingSoonModal from "./ComingSoonModal";
 import heroPlaceholder from "@/assets/hero-placeholder.jpg";
+import { Typewriter } from "@/components/ui/typewriter";
 
 const ComedianBio = () => {
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const [nameComplete, setNameComplete] = useState(false);
 
   return (
     <>
@@ -12,10 +14,22 @@ const ComedianBio = () => {
           {/* Title centered above both columns */}
           <div className="text-center mb-10 md:mb-14">
             <h1 className="font-playfair text-5xl md:text-6xl lg:text-7xl text-foreground">
-              Lana Salah
+              <Typewriter
+                text="Lana Salah"
+                delay={80}
+                startDelay={300}
+                onComplete={() => setNameComplete(true)}
+              />
             </h1>
             <p className="mt-3 text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-muted-foreground font-inter">
-              STAND-UP COMEDIAN & SATIRIST
+              {nameComplete && (
+                <Typewriter
+                  text="STAND-UP COMEDIAN & SATIRIST"
+                  delay={40}
+                  startDelay={0}
+                  cursor={false}
+                />
+              )}
             </p>
           </div>
 

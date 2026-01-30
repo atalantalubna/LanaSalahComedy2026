@@ -2,6 +2,7 @@ import ComedyHeader from "@/components/ComedyHeader";
 import ComedyFooter from "@/components/ComedyFooter";
 import SEO from "@/components/SEO";
 import { ShoppingBag } from "lucide-react";
+import { Typewriter } from "@/components/ui/typewriter";
 
 const Merch = () => {
   return (
@@ -26,7 +27,7 @@ const Merch = () => {
                 COMING SOON
               </p>
               <h1 className="font-playfair text-4xl md:text-5xl text-foreground">
-                Merch Store
+                <Typewriter text="Merch Store" delay={60} startDelay={200} />
               </h1>
               <p className="text-sm text-foreground/70 max-w-md mx-auto leading-relaxed">
                 Official Lana Salah merchandise is on its way. T-shirts, hoodies, and more—all designed with the same sharp wit you've come to expect.

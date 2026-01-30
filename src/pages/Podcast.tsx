@@ -2,6 +2,7 @@ import ComedyHeader from "@/components/ComedyHeader";
 import ComedyFooter from "@/components/ComedyFooter";
 import SEO from "@/components/SEO";
 import { Mic, Headphones, Play } from "lucide-react";
+import { Typewriter } from "@/components/ui/typewriter";
 
 const podcastEpisodes = [
   {
@@ -46,7 +47,7 @@ const Podcast = () => {
               COMING SOON
             </p>
             <h1 className="font-playfair text-4xl md:text-5xl text-foreground">
-              The Podcast
+              <Typewriter text="The Podcast" delay={60} startDelay={200} />
             </h1>
             <p className="text-sm text-foreground/70 max-w-xl mx-auto leading-relaxed">
               Conversations about comedy, culture, and the uncomfortable truths we laugh about to survive.
