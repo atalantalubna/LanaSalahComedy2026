@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Play } from "lucide-react";
 import { motion } from "motion/react";
+import lanaLogo from "@/assets/lana-hero.png";
 
 interface Video {
   id: string;
@@ -67,13 +68,25 @@ const VideoGrid = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
 
-  const filteredVideos = activeCategory === "all" 
-    ? videos 
+  // Prevent right-click on thumbnails
+  const handleContextMenu = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    return false;
+  }, []);
+
+  // Prevent drag
+  const handleDragStart = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    return false;
+  }, []);
+
+  const filteredVideos = activeCategory === "all"
+    ? videos
     : videos.filter(v => v.category === activeCategory);
 
   return (
     <section className="max-w-[1600px] mx-auto px-3 md:px-5 py-16 md:py-20">
-      <h2 className="text-[10px] uppercase tracking-widest text-muted-foreground font-inter text-center mb-8">
+      <h2 className="text-xs uppercase tracking-widest text-muted-foreground font-inter text-center mb-8">
         VIDEOS
       </h2>
 
@@ -83,7 +96,7 @@ const VideoGrid = () => {
           <button
             key={cat.id}
             onClick={() => setActiveCategory(cat.id)}
-            className={`text-[10px] uppercase tracking-widest font-inter transition-colors ${
+            className={`text-xs uppercase tracking-widest font-inter transition-colors ${
               activeCategory === cat.id
                 ? "text-foreground font-medium"
                 : "text-muted-foreground hover:text-foreground/80"
@@ -107,15 +120,31 @@ const VideoGrid = () => {
             onMouseEnter={() => setHoveredVideo(video.id)}
             onMouseLeave={() => setHoveredVideo(null)}
           >
-            <div className="relative aspect-video overflow-hidden bg-muted">
+            <div
+              className="relative aspect-video overflow-hidden bg-muted select-none"
+              onContextMenu={handleContextMenu}
+            >
               <img
                 src={video.thumbnail}
                 alt={video.title}
-                className={`w-full h-full object-cover transition-all duration-300 ${
+                onContextMenu={handleContextMenu}
+                onDragStart={handleDragStart}
+                className={`w-full h-full object-cover transition-all duration-300 pointer-events-none ${
                   hoveredVideo === video.id ? "scale-105" : ""
                 }`}
+                style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
               />
-              
+
+              {/* Logo Watermark */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <img
+                  src={lanaLogo}
+                  alt=""
+                  className="w-12 md:w-16 opacity-20"
+                  style={{ userSelect: 'none', pointerEvents: 'none' }}
+                />
+              </div>
+
               {/* Play Overlay */}
               <div className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
                 hoveredVideo === video.id ? "opacity-100" : "opacity-0"
@@ -126,14 +155,14 @@ const VideoGrid = () => {
               </div>
 
               {/* Duration Badge */}
-              <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-1 font-inter">
+              <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 font-inter">
                 {video.duration}
               </div>
             </div>
 
             <div className="mt-3">
               <h3 className="text-sm font-medium text-foreground">{video.title}</h3>
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mt-1">
                 {video.category}
               </p>
             </div>

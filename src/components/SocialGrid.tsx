@@ -219,7 +219,7 @@ const SocialGrid = () => {
       </div>
 
       {/* Asymmetric Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[250px]">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3 auto-rows-[200px] md:auto-rows-[250px]">
         {socialPosts.map((post) => (
           <SocialCard key={post.id} post={post} />
         ))}

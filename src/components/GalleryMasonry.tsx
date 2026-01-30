@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 
-// Import gallery images
+// Import gallery images and logo
+import lanaLogo from "@/assets/lana-hero.png";
 import lanaStage1 from "@/assets/gallery/lana-stage-1.jpg";
 import lanaHeadshot1 from "@/assets/gallery/lana-headshot-1.jpg";
 import lanaFestival1 from "@/assets/gallery/lana-festival-1.jpg";
@@ -17,6 +18,7 @@ import lanaPodcast from "@/assets/gallery/lana-podcast.jpg";
 interface GalleryImage {
   id: string;
   title: string;
+  location: string;
   image_url: string;
   aspect_ratio: "tall" | "wide" | "square";
   category: "performance" | "studio" | "candid" | "press";
@@ -26,6 +28,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "1",
     title: "The Comedy Store",
+    location: "West Hollywood, CA",
     image_url: lanaStage1,
     aspect_ratio: "tall",
     category: "performance",
@@ -33,6 +36,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "2",
     title: "Studio Headshot",
+    location: "Los Angeles, CA",
     image_url: lanaHeadshot1,
     aspect_ratio: "square",
     category: "studio",
@@ -40,6 +44,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "3",
     title: "Comedy Festival",
+    location: "Austin, TX",
     image_url: lanaFestival1,
     aspect_ratio: "wide",
     category: "performance",
@@ -47,6 +52,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "4",
     title: "Golden Hour",
+    location: "Santa Monica, CA",
     image_url: lanaPortraitCloseup,
     aspect_ratio: "tall",
     category: "studio",
@@ -54,6 +60,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "5",
     title: "Backstage Prep",
+    location: "Hollywood, CA",
     image_url: lanaBackstage1,
     aspect_ratio: "square",
     category: "candid",
@@ -61,6 +68,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "6",
     title: "Laugh Factory Set",
+    location: "Hollywood, CA",
     image_url: lanaStage2,
     aspect_ratio: "tall",
     category: "performance",
@@ -68,6 +76,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "7",
     title: "Los Angeles Editorial",
+    location: "Downtown LA",
     image_url: lanaEditorialLa,
     aspect_ratio: "wide",
     category: "press",
@@ -75,6 +84,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "8",
     title: "Green Room Vibes",
+    location: "The Improv, LA",
     image_url: lanaGreenroom,
     aspect_ratio: "tall",
     category: "candid",
@@ -82,6 +92,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "9",
     title: "Black & White Portrait",
+    location: "Los Angeles, CA",
     image_url: lanaBwPortrait,
     aspect_ratio: "square",
     category: "studio",
@@ -89,6 +100,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "10",
     title: "Grand Theater Performance",
+    location: "The Wiltern, LA",
     image_url: lanaTheaterEntrance,
     aspect_ratio: "wide",
     category: "performance",
@@ -96,6 +108,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "11",
     title: "LA Rooftop",
+    location: "DTLA Rooftop",
     image_url: lanaRooftop,
     aspect_ratio: "tall",
     category: "press",
@@ -103,6 +116,7 @@ const galleryImages: GalleryImage[] = [
   {
     id: "12",
     title: "Podcast Recording",
+    location: "Studio City, CA",
     image_url: lanaPodcast,
     aspect_ratio: "square",
     category: "candid",
@@ -162,7 +176,7 @@ const GalleryMasonry = () => {
       </div>
 
       {/* Masonry Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[250px]">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3 auto-rows-[200px] md:auto-rows-[250px]">
         {filteredImages.map((image) => (
           <div
             key={image.id}
@@ -198,24 +212,27 @@ const GalleryMasonry = () => {
                 style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
               />
 
-              {/* Watermark overlay */}
-              <div 
-                className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              {/* Logo Watermark - always visible */}
+              <div
+                className="absolute inset-0 flex items-center justify-center pointer-events-none"
                 style={{ userSelect: 'none' }}
               >
-                <span className="text-white/30 text-lg md:text-xl font-inter uppercase tracking-widest rotate-[-25deg]">
-                  lanasalah.com
-                </span>
+                <img
+                  src={lanaLogo}
+                  alt=""
+                  className="w-16 md:w-20 opacity-20 rotate-[-15deg]"
+                  style={{ userSelect: 'none', pointerEvents: 'none' }}
+                />
               </div>
 
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              {/* Hover Overlay with title and location */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <p className="text-white text-sm font-medium">
+                  <p className="text-white text-sm font-medium mb-1">
                     {image.title}
                   </p>
-                  <span className="text-white/70 text-xs uppercase tracking-wider">
-                    {image.category}
+                  <span className="text-white/80 text-xs font-inter">
+                    {image.location}
                   </span>
                 </div>
               </div>
