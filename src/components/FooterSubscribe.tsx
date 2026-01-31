@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/integrations/supabase/client";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, CheckCircle2, PartyPopper } from "lucide-react";
 
 // Generate random math problem
 const generateCaptcha = () => {
@@ -27,6 +27,8 @@ type SubscribeFormData = z.infer<typeof subscribeSchema>;
 
 const FooterSubscribe = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [subscriberName, setSubscriberName] = useState("");
   const [captcha, setCaptcha] = useState(generateCaptcha());
   const [honeypot, setHoneypot] = useState("");
   const { toast } = useToast();
@@ -84,6 +86,8 @@ const FooterSubscribe = () => {
           throw error;
         }
       } else {
+        setSubscriberName(data.firstName);
+        setIsSuccess(true);
         toast({
           title: "You're in!",
           description: "You'll be the first to know about shows in your area.",
@@ -103,6 +107,33 @@ const FooterSubscribe = () => {
       setIsSubmitting(false);
     }
   };
+
+  // Success confirmation state
+  if (isSuccess) {
+    return (
+      <div className="max-w-xl mx-auto text-center space-y-4 mb-12 animate-fade-in">
+        <div className="flex justify-center">
+          <div className="relative">
+            <CheckCircle2 className="w-16 h-16 text-green-500" />
+            <PartyPopper className="w-6 h-6 text-yellow-500 absolute -top-1 -right-1 animate-bounce" />
+          </div>
+        </div>
+        <h3 className="text-xl font-playfair text-foreground">
+          You're on the list, {subscriberName}!
+        </h3>
+        <p className="text-sm text-muted-foreground">
+          Thanks for subscribing! You'll be the first to know about upcoming shows in your area.
+        </p>
+        <Button
+          variant="outline"
+          onClick={() => setIsSuccess(false)}
+          className="mt-4 text-xs uppercase tracking-widest font-inter"
+        >
+          Subscribe Another Email
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-xl mx-auto text-center space-y-4 mb-12">
