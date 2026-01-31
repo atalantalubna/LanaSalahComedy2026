@@ -10,11 +10,13 @@ import {
   Mail,
   ExternalLink,
   LogOut,
+  Calendar,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Dashboard", path: "/admin", icon: LayoutDashboard },
+  { label: "Shows", path: "/admin/shows", icon: Calendar },
   { label: "Reviews", path: "/admin/reviews", icon: MessageSquare },
   { label: "Gallery", path: "/admin/gallery", icon: Image },
   { label: "Videos", path: "/admin/videos", icon: Play },

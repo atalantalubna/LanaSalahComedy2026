@@ -1,5 +1,5 @@
 // Pexels API Service
-const PEXELS_API_KEY = 'mLmLepwe813Hq6XaUbSP52rzAXKrnOWghYojNQz7oVuclLnznDewdL1P';
+const PEXELS_API_KEY = import.meta.env.VITE_PEXELS_API_KEY;
 const PEXELS_API_BASE = 'https://api.pexels.com/v1';
 
 export interface PexelsPhoto {

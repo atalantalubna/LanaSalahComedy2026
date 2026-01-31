@@ -27,6 +27,7 @@ import AdminReviews from "./pages/admin/Reviews";
 import GalleryAdmin from "./pages/admin/GalleryAdmin";
 import VideosAdmin from "./pages/admin/VideosAdmin";
 import SocialAdmin from "./pages/admin/SocialAdmin";
+import ShowsAdmin from "./pages/admin/ShowsAdmin";
 import Subscribers from "./pages/admin/Subscribers";
 import Contacts from "./pages/admin/Contacts";
 
@@ -67,6 +68,7 @@ const App = () => (
                 <Route path="/admin" element={<ProtectedRoute />}>
                   <Route element={<AdminLayout />}>
                     <Route index element={<Dashboard />} />
+                    <Route path="shows" element={<ShowsAdmin />} />
                     <Route path="reviews" element={<AdminReviews />} />
                     <Route path="gallery" element={<GalleryAdmin />} />
                     <Route path="videos" element={<VideosAdmin />} />

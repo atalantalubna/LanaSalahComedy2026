@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -27,7 +27,14 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Quote } from "lucide-react";
+import { Quote, ShieldCheck } from "lucide-react";
+
+// Generate random math problem
+const generateCaptcha = () => {
+  const num1 = Math.floor(Math.random() * 10) + 1;
+  const num2 = Math.floor(Math.random() * 10) + 1;
+  return { num1, num2, answer: num1 + num2 };
+};
 
 const reviewSchema = z.object({
   name: z
@@ -38,13 +45,14 @@ const reviewSchema = z.object({
   email: z
     .string()
     .trim()
+    .min(1, { message: "Email is required" })
     .email({ message: "Invalid email address" })
-    .max(255, { message: "Email must be less than 255 characters" })
-    .optional()
-    .or(z.literal("")),
+    .max(255, { message: "Email must be less than 255 characters" }),
   relationship: z.enum(["press", "peer", "audience"], {
     required_error: "Please select how you know Lana's work",
   }),
+  where_seen: z.string().optional(),
+  how_found: z.string().optional(),
   review: z
     .string()
     .trim()
@@ -53,14 +61,67 @@ const reviewSchema = z.object({
   permission: z.boolean().refine((val) => val === true, {
     message: "You must agree to allow your review to be displayed",
   }),
+  captcha: z.string().min(1, { message: "Please complete the verification" }),
 });
 
 type ReviewFormValues = z.infer<typeof reviewSchema>;
 
+interface Show {
+  id: string;
+  name: string;
+  venue: string;
+  date: string;
+}
+
+interface SocialLink {
+  id: string;
+  platform: string;
+  url: string;
+}
+
 const SubmitReview = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [captcha, setCaptcha] = useState(generateCaptcha());
+  const [shows, setShows] = useState<Show[]>([]);
+  const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
   const { toast } = useToast();
+
+  // Honeypot field for additional bot protection
+  const [honeypot, setHoneypot] = useState("");
+
+  useEffect(() => {
+    // Fetch shows for dropdown
+    const fetchShows = async () => {
+      try {
+        const { data } = await supabase
+          .from("shows")
+          .select("id, name, venue, date")
+          .eq("is_active", true)
+          .order("date", { ascending: false });
+        setShows(data || []);
+      } catch (error) {
+        console.error("Error fetching shows:", error);
+      }
+    };
+
+    // Fetch social links for dropdown
+    const fetchSocialLinks = async () => {
+      try {
+        const { data } = await supabase
+          .from("social_links")
+          .select("id, platform, url")
+          .eq("is_active", true)
+          .order("display_order", { ascending: true });
+        setSocialLinks(data || []);
+      } catch (error) {
+        console.error("Error fetching social links:", error);
+      }
+    };
+
+    fetchShows();
+    fetchSocialLinks();
+  }, []);
 
   const form = useForm<ReviewFormValues>({
     resolver: zodResolver(reviewSchema),
@@ -68,20 +129,47 @@ const SubmitReview = () => {
       name: "",
       email: "",
       relationship: undefined,
+      where_seen: "",
+      how_found: "",
       review: "",
       permission: false,
+      captcha: "",
     },
   });
 
   const onSubmit = async (data: ReviewFormValues) => {
+    // Check honeypot (bots will fill this)
+    if (honeypot) {
+      toast({
+        title: "Error",
+        description: "Submission blocked.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Verify CAPTCHA
+    if (parseInt(data.captcha) !== captcha.answer) {
+      toast({
+        title: "Verification failed",
+        description: "Please solve the math problem correctly.",
+        variant: "destructive",
+      });
+      setCaptcha(generateCaptcha());
+      form.setValue("captcha", "");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       const { error } = await supabase.from("reviews").insert({
         name: data.name,
-        email: data.email || null,
+        email: data.email,
         relationship: data.relationship,
         review_text: data.review,
+        where_seen: data.where_seen || null,
+        how_found: data.how_found || null,
         status: "pending",
       });
 
@@ -100,6 +188,7 @@ const SubmitReview = () => {
         description: "Failed to submit review. Please try again.",
         variant: "destructive",
       });
+      setCaptcha(generateCaptcha());
     } finally {
       setIsSubmitting(false);
     }
@@ -179,6 +268,17 @@ const SubmitReview = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
               >
+                {/* Honeypot - hidden from humans, bots will fill it */}
+                <input
+                  type="text"
+                  name="website"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  style={{ display: "none" }}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+
                 <FormField
                   control={form.control}
                   name="name"
@@ -205,7 +305,7 @@ const SubmitReview = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
-                        Email (optional)
+                        Email *
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -216,7 +316,7 @@ const SubmitReview = () => {
                         />
                       </FormControl>
                       <FormDescription className="text-xs text-muted-foreground">
-                        Only used to contact you if needed. Never displayed.
+                        Required for verification. Never displayed publicly.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -256,6 +356,79 @@ const SubmitReview = () => {
                     </FormItem>
                   )}
                 />
+
+                {shows.length > 0 && (
+                  <FormField
+                    control={form.control}
+                    name="where_seen"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
+                          Where did you see Lana?
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus:ring-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors">
+                              <SelectValue placeholder="Select a show or event" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {shows.map((show) => (
+                              <SelectItem key={show.id} value={show.name}>
+                                {show.name} - {show.venue}
+                              </SelectItem>
+                            ))}
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                {socialLinks.length > 0 && (
+                  <FormField
+                    control={form.control}
+                    name="how_found"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
+                          How did you find us?
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="border-0 border-b border-foreground/20 rounded-none bg-transparent text-foreground px-0 focus:ring-0 focus-visible:ring-0 focus-visible:border-foreground transition-colors">
+                              <SelectValue placeholder="Select a platform" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {socialLinks.map((link) => (
+                              <SelectItem key={link.id} value={link.platform}>
+                                {link.platform.charAt(0).toUpperCase() +
+                                  link.platform.slice(1)}
+                              </SelectItem>
+                            ))}
+                            <SelectItem value="word-of-mouth">
+                              Word of Mouth
+                            </SelectItem>
+                            <SelectItem value="search">
+                              Search Engine
+                            </SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
                 <FormField
                   control={form.control}
@@ -298,6 +471,38 @@ const SubmitReview = () => {
                     </FormItem>
                   )}
                 />
+
+                {/* Human Verification */}
+                <div className="pt-4 border-t border-border">
+                  <div className="flex items-center gap-2 mb-3">
+                    <ShieldCheck className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm uppercase tracking-wider text-foreground/70 font-inter">
+                      Human Verification *
+                    </span>
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="captcha"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center gap-4">
+                          <span className="text-foreground font-medium">
+                            What is {captcha.num1} + {captcha.num2}?
+                          </span>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              placeholder="?"
+                              className="w-20 border border-foreground/20 rounded bg-transparent text-foreground text-center focus-visible:ring-0 focus-visible:border-foreground transition-colors"
+                              {...field}
+                            />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 <div className="pt-4 text-center">
                   <Button

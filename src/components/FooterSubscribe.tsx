@@ -6,30 +6,64 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/integrations/supabase/client";
+import { ShieldCheck } from "lucide-react";
+
+// Generate random math problem
+const generateCaptcha = () => {
+  const num1 = Math.floor(Math.random() * 10) + 1;
+  const num2 = Math.floor(Math.random() * 10) + 1;
+  return { num1, num2, answer: num1 + num2 };
+};
 
 const subscribeSchema = z.object({
   firstName: z.string().trim().min(1, { message: "First name is required" }).max(50),
   lastName: z.string().trim().min(1, { message: "Last name is required" }).max(50),
   email: z.string().trim().email({ message: "Please enter a valid email" }).max(255),
   phone: z.string().trim().min(10, { message: "Please enter a valid phone number" }).max(20),
+  captcha: z.string().min(1, { message: "Please complete verification" }),
 });
 
 type SubscribeFormData = z.infer<typeof subscribeSchema>;
 
 const FooterSubscribe = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [captcha, setCaptcha] = useState(generateCaptcha());
+  const [honeypot, setHoneypot] = useState("");
   const { toast } = useToast();
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<SubscribeFormData>({
     resolver: zodResolver(subscribeSchema),
   });
 
   const onSubmit = async (data: SubscribeFormData) => {
+    // Check honeypot
+    if (honeypot) {
+      toast({
+        title: "Error",
+        description: "Submission blocked.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Verify CAPTCHA
+    if (parseInt(data.captcha) !== captcha.answer) {
+      toast({
+        title: "Verification failed",
+        description: "Please solve the math problem correctly.",
+        variant: "destructive",
+      });
+      setCaptcha(generateCaptcha());
+      setValue("captcha", "");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -55,6 +89,7 @@ const FooterSubscribe = () => {
           description: "You'll be the first to know about shows in your area.",
         });
         reset();
+        setCaptcha(generateCaptcha());
       }
     } catch (error) {
       console.error("Error subscribing:", error);
@@ -63,6 +98,7 @@ const FooterSubscribe = () => {
         description: "Failed to subscribe. Please try again.",
         variant: "destructive",
       });
+      setCaptcha(generateCaptcha());
     } finally {
       setIsSubmitting(false);
     }
@@ -78,6 +114,17 @@ const FooterSubscribe = () => {
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        {/* Honeypot */}
+        <input
+          type="text"
+          name="website"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          style={{ display: "none" }}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <Input
@@ -127,6 +174,23 @@ const FooterSubscribe = () => {
             )}
           </div>
         </div>
+
+        {/* Human Verification */}
+        <div className="flex items-center justify-center gap-3 pt-2">
+          <ShieldCheck className="w-4 h-4 text-muted-foreground" />
+          <span className="text-sm text-muted-foreground">
+            {captcha.num1} + {captcha.num2} =
+          </span>
+          <Input
+            type="number"
+            placeholder="?"
+            {...register("captcha")}
+            className="w-16 bg-background border-input text-foreground text-center"
+          />
+        </div>
+        {errors.captcha && (
+          <p className="text-xs text-destructive">{errors.captcha.message}</p>
+        )}
 
         <Button
           type="submit"
