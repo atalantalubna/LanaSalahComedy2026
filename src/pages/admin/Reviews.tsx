@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
-import { MessageSquare, Copy, Check, X, Trash2, Eye } from "lucide-react";
+import { MessageSquare, Copy, Check, X, Trash2, Eye, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import {
   Table,
@@ -53,6 +63,13 @@ const Reviews = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [deleteReview, setDeleteReview] = useState<Review | null>(null);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    relationship: "" as "press" | "peer" | "audience" | "",
+    review_text: "",
+  });
 
   const fetchReviews = async () => {
     try {
@@ -79,6 +96,44 @@ const Reviews = () => {
     const link = `${window.location.origin}/submit-review`;
     navigator.clipboard.writeText(link);
     toast.success("Review link copied!");
+  };
+
+  const resetForm = () => {
+    setFormData({ name: "", relationship: "", review_text: "" });
+  };
+
+  const handleAddReview = async () => {
+    if (!formData.name.trim() || !formData.relationship || !formData.review_text.trim()) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      const { data, error } = await supabase
+        .from("reviews")
+        .insert({
+          name: formData.name.trim(),
+          relationship: formData.relationship,
+          review_text: formData.review_text.trim(),
+          status: "approved", // Admin-added reviews are auto-approved
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setReviews((prev) => [data, ...prev]);
+      toast.success("Review added and approved");
+      setIsAddDialogOpen(false);
+      resetForm();
+    } catch (error) {
+      console.error("Error adding review:", error);
+      toast.error("Failed to add review");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const updateReviewStatus = async (
@@ -163,10 +218,16 @@ const Reviews = () => {
             Manage testimonials and reviews
           </p>
         </div>
-        <Button variant="outline" onClick={copyReviewLink} className="gap-2">
-          <Copy className="w-4 h-4" />
-          Copy Review Link
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={copyReviewLink} className="gap-2">
+            <Copy className="w-4 h-4" />
+            Copy Review Link
+          </Button>
+          <Button onClick={() => setIsAddDialogOpen(true)} className="gap-2">
+            <Plus className="w-4 h-4" />
+            Add Review
+          </Button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -451,6 +512,68 @@ const Reviews = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Add Review Dialog */}
+      <Dialog open={isAddDialogOpen} onOpenChange={(open) => {
+        setIsAddDialogOpen(open);
+        if (!open) resetForm();
+      }}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="font-playfair">Add Review</DialogTitle>
+            <DialogDescription>
+              Manually add a testimonial. It will be auto-approved.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Name *</Label>
+              <Input
+                value={formData.name}
+                onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+                placeholder="John Smith"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Type *</Label>
+              <Select
+                value={formData.relationship}
+                onValueChange={(value: "press" | "peer" | "audience") =>
+                  setFormData((prev) => ({ ...prev, relationship: value }))
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="press">Press / Media</SelectItem>
+                  <SelectItem value="peer">Fellow Comedian / Industry</SelectItem>
+                  <SelectItem value="audience">Audience Member</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Review *</Label>
+              <Textarea
+                value={formData.review_text}
+                onChange={(e) => setFormData((prev) => ({ ...prev, review_text: e.target.value }))}
+                placeholder="Write the testimonial here..."
+                className="min-h-[120px]"
+              />
+            </div>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddReview} disabled={isSaving}>
+              {isSaving ? "Adding..." : "Add Review"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
