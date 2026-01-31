@@ -117,7 +117,7 @@ const ReviewCarousel = () => {
 
     const interval = setInterval(() => {
       emblaApi.scrollNext();
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [emblaApi, isHovered, reviews.length]);
