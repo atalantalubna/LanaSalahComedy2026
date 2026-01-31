@@ -8,14 +8,40 @@ const ComedyFooter = () => {
       {/* Subscribe Form */}
       <FooterSubscribe />
 
-      {/* Logo */}
+      {/* Dancing Logo */}
       <div className="flex justify-center mb-8">
-        <img 
-          src={lanaLogo} 
-          alt="Lana Salah" 
-          className="h-16 md:h-20 w-auto"
-        />
+        <div className="relative p-4 rounded-lg bg-gradient-to-br from-red-500/10 via-transparent to-orange-500/10 border border-white/5">
+          <img
+            src={lanaLogo}
+            alt="Lana Salah"
+            className="h-16 md:h-20 w-auto animate-dance"
+            style={{
+              animation: 'dance 1.2s ease-in-out infinite',
+            }}
+          />
+          {/* Decorative music notes */}
+          <span className="absolute -top-2 -right-2 text-red-500/40 text-lg animate-bounce" style={{ animationDelay: '0.1s' }}>♪</span>
+          <span className="absolute -bottom-1 -left-2 text-orange-500/40 text-sm animate-bounce" style={{ animationDelay: '0.3s' }}>♫</span>
+        </div>
       </div>
+
+      {/* Dance animation keyframes */}
+      <style>{`
+        @keyframes dance {
+          0%, 100% {
+            transform: rotate(-3deg) translateY(0);
+          }
+          25% {
+            transform: rotate(3deg) translateY(-4px);
+          }
+          50% {
+            transform: rotate(-3deg) translateY(0);
+          }
+          75% {
+            transform: rotate(3deg) translateY(-4px);
+          }
+        }
+      `}</style>
 
       {/* Social Links */}
       <div className="flex flex-wrap justify-center gap-6 mb-8">
