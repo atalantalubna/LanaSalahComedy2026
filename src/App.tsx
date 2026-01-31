@@ -16,6 +16,7 @@ import Shows from "./pages/Shows";
 import EPK from "./pages/EPK";
 import Podcast from "./pages/Podcast";
 import Merch from "./pages/Merch";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import SubmitReview from "./pages/SubmitReview";
 
@@ -56,6 +57,7 @@ const App = () => (
                 <Route path="/epk" element={<EPK />} />
                 <Route path="/podcast" element={<Podcast />} />
                 <Route path="/merch" element={<Merch />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="/submit-review" element={<SubmitReview />} />
 
                 {/* Admin Login - Public */}
